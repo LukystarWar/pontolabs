@@ -2,6 +2,7 @@
   publish = "."
   functions = "netlify/functions"
   command = ""
+  environment = { SECRETS_SCAN_OMIT_PATHS = "*.md,assets/js/config.js" }
 
 [[redirects]]
   from = "/*"
