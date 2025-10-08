@@ -5,11 +5,19 @@
 const jwt = require('jsonwebtoken');
 const { createClient } = require('@supabase/supabase-js');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'pontolabs-secret-key-2025-change-in-production';
+const JWT_SECRET = process.env.JWT_SECRET;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
 
 exports.handler = async (event) => {
+  // Validar env vars
+  if (!JWT_SECRET || !SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Variáveis de ambiente não configuradas' })
+    };
+  }
+
   // CORS headers
   const headers = {
     'Access-Control-Allow-Origin': '*',
