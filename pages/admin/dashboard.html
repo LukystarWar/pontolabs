@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#00BE28">
+  <title>Dashboard - PontoLabs Admin</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/admin.css">
+  <link rel="stylesheet" href="/assets/css/mobile.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <header class="admin-header">
+      <div class="logo">🕐 PontoLabs</div>
+      <div class="user-info">
+        <span class="plano-badge" id="plano">PREMIUM</span>
+        <span id="user-name">Admin</span>
+        <button class="btn btn-secondary btn-sm" id="logout-btn">Sair</button>
+      </div>
+    </header>
+
+    <nav class="admin-nav">
+      <ul>
+        <li><a href="/pages/admin/dashboard.html" class="active">Dashboard</a></li>
+        <li><a href="/pages/admin/funcionarios.html">Funcionários</a></li>
+        <li><a href="/pages/admin/terminais.html">Terminais</a></li>
+        <li><a href="/pages/admin/relatorios.html">Relatórios</a></li>
+      </ul>
+    </nav>
+
+    <main class="admin-content">
+      <div class="page-header">
+        <h1>Dashboard</h1>
+        <p id="empresa-nome">Empresa</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="stat-funcionarios">0</div>
+          <div class="stat-label">Funcionários Ativos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-terminais">0</div>
+          <div class="stat-label">Terminais Ativos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-pontos-hoje">0</div>
+          <div class="stat-label">Pontos Hoje</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-pontos-mes">0</div>
+          <div class="stat-label">Pontos este Mês</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 style="margin-bottom: 1rem;">Últimos Registros</h2>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Data/Hora</th>
+                <th>Funcionário</th>
+                <th>Terminal</th>
+                <th>Tipo</th>
+              </tr>
+            </thead>
+            <tbody id="ultimos-registros">
+              <tr>
+                <td colspan="4" style="text-align: center; padding: 2rem;">Carregando...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/db.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script>
+    let empresaId = null;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const profile = await loadUserInfo();
+
+        if (profile.role !== 'admin' && profile.role !== 'superadmin') {
+          alert('Acesso negado.');
+          window.location.href = '/pages/login.html';
+          return;
+        }
+
+        empresaId = profile.empresa_id;
+
+        await carregarDashboard();
+
+        // Atualiza a cada 30 segundos
+        setInterval(carregarDashboard, 30000);
+
+      } catch (error) {
+        console.error('Erro ao carregar dashboard:', error);
+        showAlert('Erro ao carregar dashboard', 'error');
+      }
+    });
+
+    async function carregarDashboard() {
+      try {
+        // Carrega funcionários
+        const funcionarios = await getFuncionarios(empresaId);
+        const funcionariosAtivos = funcionarios.filter(f => f.ativo);
+        document.getElementById('stat-funcionarios').textContent = funcionariosAtivos.length;
+
+        // Carrega terminais
+        const terminais = await getTerminais(empresaId);
+        const terminaisAtivos = terminais.filter(t => t.ativo);
+        document.getElementById('stat-terminais').textContent = terminaisAtivos.length;
+
+        // Pontos hoje
+        const hoje = new Date();
+        hoje.setHours(0, 0, 0, 0);
+        const pontosHoje = await getPontos(empresaId, {
+          dataInicio: hoje.toISOString()
+        });
+        document.getElementById('stat-pontos-hoje').textContent = pontosHoje.length;
+
+        // Pontos este mês
+        const inicioMes = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
+        const pontosMes = await getPontos(empresaId, {
+          dataInicio: inicioMes.toISOString()
+        });
+        document.getElementById('stat-pontos-mes').textContent = pontosMes.length;
+
+        // Últimos registros
+        const ultimosPontos = await getPontos(empresaId);
+        renderUltimosRegistros(ultimosPontos.slice(0, 10));
+
+      } catch (error) {
+        console.error('Erro ao carregar dados:', error);
+      }
+    }
+
+    function renderUltimosRegistros(pontos) {
+      const tbody = document.getElementById('ultimos-registros');
+
+      if (pontos.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 2rem;">Nenhum registro encontrado</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = pontos.map(p => {
+        const data = new Date(p.data_hora);
+        const dataFormatada = data.toLocaleDateString('pt-BR');
+        const horaFormatada = data.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+        return `
+          <tr>
+            <td>${dataFormatada} ${horaFormatada}</td>
+            <td>${p.funcionarios?.nome || 'N/A'}</td>
+            <td>${p.terminais?.nome || 'N/A'}</td>
+            <td><span class="badge badge-${p.tipo === 'entrada' ? 'success' : 'danger'}">${p.tipo.toUpperCase()}</span></td>
+          </tr>
+        `;
+      }).join('');
+    }
+  </script>
+</body>
+</html>

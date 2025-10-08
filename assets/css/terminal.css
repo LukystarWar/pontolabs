@@ -1,0 +1,106 @@
+/* ============================================
+   PONTOLABS - TERMINAL
+   ============================================ */
+
+.terminal-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #00BE28 0%, #00a022 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: white;
+}
+
+.terminal-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.terminal-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.terminal-info {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.qr-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.qr-code {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.qr-code canvas {
+  display: block;
+  margin: 0 auto;
+}
+
+.qr-info {
+  color: var(--text);
+  font-size: 0.9rem;
+  margin-top: 1rem;
+}
+
+.qr-countdown {
+  color: var(--primary);
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+.terminal-footer {
+  margin-top: 2rem;
+  text-align: center;
+  opacity: 0.9;
+}
+
+.terminal-footer .btn-secondary {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid white;
+}
+
+.terminal-footer .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.offline-badge {
+  background: #ffc107;
+  color: #333;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+.fullscreen-btn {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid white;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.fullscreen-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}

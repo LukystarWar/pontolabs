@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#00BE28">
+  <title>Funcionários - PontoLabs Admin</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/admin.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <header class="admin-header">
+      <div class="logo">🕐 PontoLabs</div>
+      <div class="user-info">
+        <span class="plano-badge" id="plano">PREMIUM</span>
+        <span id="user-name">Admin</span>
+        <button class="btn btn-secondary btn-sm" id="logout-btn">Sair</button>
+      </div>
+    </header>
+
+    <nav class="admin-nav">
+      <ul>
+        <li><a href="/pages/admin/dashboard.html">Dashboard</a></li>
+        <li><a href="/pages/admin/funcionarios.html" class="active">Funcionários</a></li>
+        <li><a href="/pages/admin/terminais.html">Terminais</a></li>
+        <li><a href="/pages/admin/relatorios.html">Relatórios</a></li>
+      </ul>
+    </nav>
+
+    <main class="admin-content">
+      <div class="page-header">
+        <h1>Funcionários</h1>
+        <p>Gerencie os funcionários da <span id="empresa-nome">empresa</span></p>
+      </div>
+
+      <div id="alert-container"></div>
+
+      <div class="action-bar">
+        <input type="text" class="search-box" id="search-funcionarios" placeholder="🔍 Buscar funcionário...">
+        <button class="btn btn-primary" id="btn-novo-funcionario">+ Novo Funcionário</button>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Cargo</th>
+              <th>Turno</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="funcionarios-list">
+            <tr>
+              <td colspan="5" style="text-align: center; padding: 2rem;">Carregando...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal -->
+  <div id="modal-funcionario" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modal-title">Novo Funcionário</h2>
+        <button class="modal-close" id="modal-close">&times;</button>
+      </div>
+      <form id="form-funcionario">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Nome *</label>
+            <input type="text" id="func-nome" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Cargo</label>
+              <input type="text" id="func-cargo">
+            </div>
+            <div class="form-group">
+              <label>Turno</label>
+              <select id="func-turno">
+                <option value="">Selecione...</option>
+                <option value="Manhã">Manhã</option>
+                <option value="Tarde">Tarde</option>
+                <option value="Noite">Noite</option>
+                <option value="Integral">Integral</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>
+              <input type="checkbox" id="func-ativo" checked> Ativo
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="btn-cancelar">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btn-salvar">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/db.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script src="/assets/js/funcionarios.js"></script>
+</body>
+</html>

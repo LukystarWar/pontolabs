@@ -1,0 +1,140 @@
+/* ============================================
+   PONTOLABS - FUNCIONÁRIO
+   ============================================ */
+
+.funcionario-container {
+  min-height: 100vh;
+  background: var(--bg-gray);
+}
+
+.funcionario-header {
+  background: var(--primary);
+  color: white;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.funcionario-header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.funcionario-header p {
+  opacity: 0.9;
+  font-size: 0.95rem;
+}
+
+.funcionario-content {
+  padding: 2rem 1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.scan-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+}
+
+.scan-card h2 {
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+.scan-btn {
+  width: 100%;
+  padding: 1.5rem;
+  font-size: 1.2rem;
+  margin-top: 1rem;
+}
+
+#reader {
+  width: 100%;
+  margin: 1rem 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tipo-selector {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.tipo-btn {
+  flex: 1;
+  padding: 1rem;
+  border: 2px solid var(--border);
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.tipo-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.tipo-btn:hover {
+  border-color: var(--primary);
+}
+
+.historico-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.historico-card h3 {
+  color: var(--text);
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.historico-item {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.historico-item:last-child {
+  border-bottom: none;
+}
+
+.historico-tipo {
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.historico-tipo.entrada {
+  background: #d4edda;
+  color: #155724;
+}
+
+.historico-tipo.saida {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-light);
+}
+
+.funcionario-footer {
+  text-align: center;
+  padding: 1rem;
+}

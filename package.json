@@ -1,0 +1,23 @@
+{
+  "name": "pontolabs",
+  "version": "1.0.0",
+  "description": "Sistema de ponto digital com QR Code dinâmico",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'Static site - no build needed'",
+    "deploy": "netlify deploy --prod"
+  },
+  "keywords": [
+    "ponto",
+    "qrcode",
+    "pwa",
+    "supabase",
+    "netlify"
+  ],
+  "author": "Castro Labs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LukystarWar/pontolabs.git"
+  }
+}

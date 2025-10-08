@@ -1,0 +1,166 @@
+/* ============================================
+   PONTOLABS - MOBILE RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  /* Admin Layout */
+  .admin-header {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .admin-header .user-info {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .admin-nav {
+    padding: 0.5rem 1rem;
+    overflow-x: auto;
+  }
+
+  .admin-nav ul {
+    gap: 1rem;
+    white-space: nowrap;
+  }
+
+  .admin-content {
+    padding: 1rem;
+  }
+
+  .page-header h1 {
+    font-size: 1.5rem;
+  }
+
+  /* Stats Grid */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .stat-card .stat-value {
+    font-size: 2rem;
+  }
+
+  /* Action Bar */
+  .action-bar {
+    flex-direction: column;
+  }
+
+  .search-box {
+    max-width: 100%;
+  }
+
+  /* Tables */
+  .table-container {
+    overflow-x: auto;
+  }
+
+  table {
+    min-width: 600px;
+  }
+
+  th, td {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  /* Buttons */
+  .btn-group {
+    flex-direction: column;
+  }
+
+  .btn-sm {
+    width: 100%;
+  }
+
+  /* Modal */
+  .modal {
+    width: 95%;
+    padding: 1.5rem;
+  }
+
+  .modal-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  /* Terminal */
+  .terminal-container {
+    padding: 1rem;
+  }
+
+  .terminal-header h1 {
+    font-size: 2rem;
+  }
+
+  .terminal-info {
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 1rem;
+  }
+
+  .qr-container {
+    padding: 1.5rem;
+  }
+
+  .fullscreen-btn {
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  /* Funcionário */
+  .funcionario-content {
+    padding: 1rem;
+  }
+
+  .scan-card {
+    padding: 1.5rem;
+  }
+
+  .tipo-selector {
+    flex-direction: column;
+  }
+
+  .historico-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Stats Grid - 1 coluna em telas muito pequenas */
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Login */
+  .login-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .login-logo h1 {
+    font-size: 1.8rem;
+  }
+
+  /* Terminal */
+  .terminal-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .qr-container {
+    padding: 1rem;
+  }
+
+  /* Buttons */
+  .btn {
+    padding: 0.65rem 1.25rem;
+  }
+}

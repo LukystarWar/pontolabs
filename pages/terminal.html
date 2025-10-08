@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#00BE28">
+  <title>Terminal - PontoLabs</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/terminal.css">
+</head>
+<body>
+  <button class="fullscreen-btn" id="fullscreen-btn">⛶ Tela Cheia</button>
+
+  <div class="terminal-container">
+    <div class="terminal-header">
+      <h1>🕐 Terminal PontoLabs</h1>
+      <div class="terminal-info">
+        <span id="empresa-nome">Carregando...</span>
+        <span>•</span>
+        <span id="terminal-nome">Terminal</span>
+      </div>
+    </div>
+
+    <div id="offline-indicator" class="offline-badge hidden">
+      ⚠️ Modo Offline
+    </div>
+
+    <div class="qr-container">
+      <div class="qr-code" id="qr-code"></div>
+      <div class="qr-info">
+        <p>Aproxime o celular e escaneie o QR Code</p>
+        <p class="qr-countdown" id="qr-countdown">Gerando...</p>
+      </div>
+    </div>
+
+    <div class="terminal-footer">
+      <button class="btn btn-secondary" id="logout-btn">Sair</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/db.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script src="/assets/js/qr-generator.js"></script>
+  <script>
+    let qrGenerator = null;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        // Carrega informações do usuário
+        const profile = await loadUserInfo();
+
+        // Verifica se é terminal
+        if (profile.role !== 'terminal') {
+          alert('Acesso negado. Apenas terminais podem acessar esta página.');
+          window.location.href = '/pages/login.html';
+          return;
+        }
+
+        // Busca dados do terminal
+        const terminais = await getTerminais(profile.empresa_id);
+        const terminal = terminais.find(t => t.usuario_id === profile.id);
+
+        if (!terminal) {
+          alert('Terminal não encontrado.');
+          window.location.href = '/pages/login.html';
+          return;
+        }
+
+        if (!terminal.ativo) {
+          alert('Terminal inativo.');
+          window.location.href = '/pages/login.html';
+          return;
+        }
+
+        // Atualiza UI
+        document.getElementById('terminal-nome').textContent = terminal.nome;
+
+        // Inicializa gerador de QR Code
+        qrGenerator = new QRGenerator(
+          terminal.id,
+          profile.empresa_id,
+          terminal.chave_secreta || JWT_SECRET
+        );
+
+        await qrGenerator.init('qr-code', 'qr-countdown');
+
+        console.log('Terminal iniciado com sucesso');
+
+      } catch (error) {
+        console.error('Erro ao inicializar terminal:', error);
+        alert('Erro ao inicializar terminal: ' + error.message);
+      }
+    });
+
+    // Botão fullscreen
+    document.getElementById('fullscreen-btn').addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.error('Erro ao entrar em tela cheia:', err);
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    });
+
+    // Detecta se está offline
+    window.addEventListener('online', () => {
+      document.getElementById('offline-indicator').classList.add('hidden');
+    });
+
+    window.addEventListener('offline', () => {
+      document.getElementById('offline-indicator').classList.remove('hidden');
+    });
+  </script>
+</body>
+</html>

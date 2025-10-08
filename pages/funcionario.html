@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#00BE28">
+  <title>Funcionário - PontoLabs</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/funcionario.css">
+</head>
+<body>
+  <div class="funcionario-container">
+    <div class="funcionario-header">
+      <h1>🕐 PontoLabs</h1>
+      <p id="user-name">Carregando...</p>
+      <p style="font-size: 0.85rem; opacity: 0.9;" id="empresa-nome"></p>
+    </div>
+
+    <div class="funcionario-content">
+      <div class="scan-card">
+        <h2>Registrar Ponto</h2>
+
+        <div id="alert-container"></div>
+
+        <div class="tipo-selector">
+          <button class="tipo-btn active" data-tipo="entrada" id="tipo-entrada">
+            📥 Entrada
+          </button>
+          <button class="tipo-btn" data-tipo="saida" id="tipo-saida">
+            📤 Saída
+          </button>
+        </div>
+
+        <div id="reader" class="hidden"></div>
+
+        <button class="btn btn-primary scan-btn" id="scan-btn">
+          📷 Escanear QR Code
+        </button>
+      </div>
+
+      <div class="historico-card">
+        <h3>Últimos Registros</h3>
+        <div id="historico-list">
+          <div class="empty-state">Carregando...</div>
+        </div>
+      </div>
+
+      <div class="funcionario-footer">
+        <button class="btn btn-secondary" id="logout-btn">Sair</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/db.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script src="/assets/js/qr-reader.js"></script>
+  <script src="/assets/js/ponto.js"></script>
+  <script>
+    let qrReader = null;
+    let tipoSelecionado = 'entrada';
+    let funcionarioData = null;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        // Carrega informações do usuário
+        const profile = await loadUserInfo();
+
+        // Verifica se é funcionário
+        if (profile.role !== 'funcionario') {
+          alert('Acesso negado. Apenas funcionários podem acessar esta página.');
+          window.location.href = '/pages/login.html';
+          return;
+        }
+
+        // Busca dados do funcionário
+        const funcionarios = await getFuncionarios(profile.empresa_id);
+        funcionarioData = funcionarios.find(f => f.usuario_id === profile.id);
+
+        if (!funcionarioData) {
+          alert('Funcionário não encontrado.');
+          window.location.href = '/pages/login.html';
+          return;
+        }
+
+        if (!funcionarioData.ativo) {
+          alert('Funcionário inativo.');
+          window.location.href = '/pages/login.html';
+          return;
+        }
+
+        // Carrega histórico
+        await carregarHistorico();
+
+        // Inicializa QR Reader
+        qrReader = new QRReader();
+        await qrReader.init('reader', handleQRScan);
+
+        console.log('Página do funcionário carregada com sucesso');
+
+      } catch (error) {
+        console.error('Erro ao inicializar página:', error);
+        showAlert('Erro ao carregar página: ' + error.message, 'error');
+      }
+    });
+
+    // Seletor de tipo
+    document.querySelectorAll('.tipo-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tipo-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        tipoSelecionado = btn.dataset.tipo;
+      });
+    });
+
+    // Botão de scan
+    document.getElementById('scan-btn').addEventListener('click', async () => {
+      const scanBtn = document.getElementById('scan-btn');
+      const readerElement = document.getElementById('reader');
+
+      if (!qrReader.getIsScanning()) {
+        try {
+          readerElement.classList.remove('hidden');
+          await qrReader.start();
+          scanBtn.textContent = '⏹️ Parar Scanner';
+          scanBtn.classList.remove('btn-primary');
+          scanBtn.classList.add('btn-danger');
+        } catch (error) {
+          showAlert('Erro ao iniciar câmera: ' + error.message, 'error');
+        }
+      } else {
+        await qrReader.stop();
+        readerElement.classList.add('hidden');
+        scanBtn.textContent = '📷 Escanear QR Code';
+        scanBtn.classList.remove('btn-danger');
+        scanBtn.classList.add('btn-primary');
+      }
+    });
+
+    // Handler quando QR é escaneado
+    async function handleQRScan(qrToken) {
+      try {
+        showAlert('QR Code lido! Registrando ponto...', 'info');
+
+        const ip = await getClientIP();
+
+        const pontoData = {
+          funcionario_id: funcionarioData.id,
+          empresa_id: funcionarioData.empresa_id,
+          tipo: tipoSelecionado,
+          token_qr: qrToken,
+          data_hora: new Date().toISOString(),
+          ip: ip
+        };
+
+        const hash = await generateHash(pontoData);
+        pontoData.hash_registro = hash;
+
+        // Registra ponto
+        const result = await registrarPontoLocal(pontoData);
+
+        showAlert(`✅ Ponto de ${tipoSelecionado} registrado com sucesso!`, 'success');
+
+        // Atualiza histórico
+        await carregarHistorico();
+
+      } catch (error) {
+        console.error('Erro ao registrar ponto:', error);
+        showAlert(error.message, 'error');
+      }
+    }
+
+    // Carrega histórico
+    async function carregarHistorico() {
+      try {
+        const dataInicio = new Date();
+        dataInicio.setDate(dataInicio.getDate() - 7); // Últimos 7 dias
+
+        const pontos = await getPontos(funcionarioData.empresa_id, {
+          funcionarioId: funcionarioData.id,
+          dataInicio: dataInicio.toISOString()
+        });
+
+        const historicoList = document.getElementById('historico-list');
+
+        if (pontos.length === 0) {
+          historicoList.innerHTML = '<div class="empty-state">Nenhum registro encontrado</div>';
+          return;
+        }
+
+        historicoList.innerHTML = pontos.slice(0, 10).map(p => {
+          const data = new Date(p.data_hora);
+          const dataFormatada = data.toLocaleDateString('pt-BR');
+          const horaFormatada = data.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+          return `
+            <div class="historico-item">
+              <div>
+                <strong>${dataFormatada}</strong><br>
+                <small>${horaFormatada}</small>
+              </div>
+              <span class="historico-tipo ${p.tipo}">${p.tipo.toUpperCase()}</span>
+            </div>
+          `;
+        }).join('');
+
+      } catch (error) {
+        console.error('Erro ao carregar histórico:', error);
+      }
+    }
+  </script>
+</body>
+</html>
