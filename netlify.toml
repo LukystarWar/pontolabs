@@ -1,6 +1,7 @@
 [build]
   publish = "."
   functions = "netlify/functions"
+  command = ""
 
 [[redirects]]
   from = "/*"
@@ -9,3 +10,5 @@
 
 [functions]
   node_bundler = "esbuild"
+  directory = "netlify/functions"
+  included_files = ["netlify/functions/**"]

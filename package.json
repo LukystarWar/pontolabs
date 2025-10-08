@@ -7,6 +7,10 @@
     "build": "echo 'Static site - no build needed'",
     "deploy": "netlify deploy --prod"
   },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "jsonwebtoken": "^9.0.2"
+  },
   "keywords": [
     "ponto",
     "qrcode",
