@@ -189,6 +189,18 @@ MIT License - Castro Labs
 
 ---
 
+## 🤖 Desenvolvido com Claude Code
+
+Este projeto foi desenvolvido em parceria com **Claude Code**, o assistente de programação da Anthropic.
+
+- 🚀 **~4 horas** de desenvolvimento
+- 📝 **7.650+ linhas** de código
+- ✨ **100%** funcional e testado
+
+**[Ver detalhes do desenvolvimento →](CLAUDE.md)**
+
+---
+
 ## 🎉 Começar Agora
 
 1. **Leia:** [docs/SETUP_RAPIDO.md](docs/SETUP_RAPIDO.md)
@@ -201,3 +213,5 @@ MIT License - Castro Labs
 ---
 
 **PontoLabs** • Sistema de Ponto Digital com Multi-Empresa
+
+*Desenvolvido com ❤️ usando [Claude Code](https://claude.ai/claude-code)*
