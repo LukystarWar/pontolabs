@@ -553,11 +553,9 @@ async function loadPontosTab(empresaId) {
   }
 }
 
-// Adicionar usuário (redireciona para Supabase)
+// Adicionar usuário - Abre modal de criar admin
 function addUsuario() {
-  if (confirm('Para adicionar um usuário, você precisa:\n\n1. Criar no Supabase Auth\n2. Depois vincular à empresa\n\nDeseja abrir o Supabase Dashboard?')) {
-    window.open('https://supabase.com/dashboard/project/_/auth/users', '_blank');
-  }
+  openCreateAdminModal();
 }
 
 // Formata data
@@ -574,15 +572,163 @@ function formatDateTime(dateString) {
   return date.toLocaleString('pt-BR');
 }
 
+// ============================================
+// CRIAR ADMIN
+// ============================================
+
+let createdCredentials = null;
+
+// Abre modal de criar admin
+function openCreateAdminModal() {
+  if (!checkServiceKeyConfigured()) {
+    alert('⚠️ Service Role Key não configurada!\n\nPara criar admins automaticamente, você precisa:\n\n1. Acessar: https://supabase.com/dashboard/project/pfbynyflbtdlnozqtgxz/settings/api\n2. Copiar a "service_role" key\n3. Colar em: assets/js/superadmin-config.js\n4. Recarregar a página\n\nPor enquanto, você pode criar manualmente via Supabase Auth.');
+    return;
+  }
+
+  if (!currentEmpresaId) {
+    alert('Selecione uma empresa primeiro');
+    return;
+  }
+
+  document.getElementById('criar-admin-form').reset();
+  document.getElementById('criar-admin-modal').style.display = 'flex';
+}
+
+// Fecha modal de criar admin
+function closeCreateAdminModal() {
+  document.getElementById('criar-admin-modal').style.display = 'none';
+  document.getElementById('criar-admin-form').reset();
+}
+
+// Setup do formulário de criar admin
+document.getElementById('criar-admin-form')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  await handleCreateAdmin();
+});
+
+// Criar admin
+async function handleCreateAdmin() {
+  const nome = document.getElementById('admin-nome').value;
+  const email = document.getElementById('admin-email').value;
+  const password = document.getElementById('admin-password').value;
+  const passwordConfirm = document.getElementById('admin-password-confirm').value;
+
+  // Validar senhas
+  if (password !== passwordConfirm) {
+    alert('As senhas não conferem!');
+    return;
+  }
+
+  if (password.length < 6) {
+    alert('A senha deve ter no mínimo 6 caracteres');
+    return;
+  }
+
+  const btn = document.getElementById('criar-admin-btn');
+  btn.disabled = true;
+  btn.textContent = 'Criando...';
+
+  try {
+    // Criar admin usando a função do superadmin-config.js
+    const result = await createAdminUser(currentEmpresaId, nome, email, password);
+
+    // Salvar credenciais
+    createdCredentials = result.credentials;
+
+    // Fechar modal de criação
+    closeCreateAdminModal();
+
+    // Mostrar modal de credenciais
+    showCredenciais(result.credentials);
+
+    // Recarregar aba de usuários
+    await loadUsuariosTab(currentEmpresaId);
+
+    alert('✅ Admin criado com sucesso!');
+
+  } catch (error) {
+    console.error('Erro ao criar admin:', error);
+    let errorMessage = 'Erro ao criar admin: ';
+
+    if (error.message.includes('already exists') || error.message.includes('duplicate')) {
+      errorMessage += 'Este email já está em uso!';
+    } else if (error.message.includes('invalid email')) {
+      errorMessage += 'Email inválido!';
+    } else {
+      errorMessage += error.message || 'Erro desconhecido';
+    }
+
+    alert(errorMessage);
+
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Criar Admin';
+  }
+}
+
+// Mostrar modal com credenciais
+function showCredenciais(credentials) {
+  const loginUrl = window.location.origin + '/pages/login.html';
+
+  document.getElementById('credencial-email').textContent = credentials.email;
+  document.getElementById('credencial-password').textContent = credentials.password;
+  document.getElementById('credencial-url').textContent = loginUrl;
+
+  document.getElementById('credenciais-modal').style.display = 'flex';
+}
+
+// Fechar modal de credenciais
+function closeCredenciaisModal() {
+  document.getElementById('credenciais-modal').style.display = 'none';
+  createdCredentials = null;
+}
+
+// Copiar credenciais
+function copyCredentials() {
+  if (!createdCredentials) return;
+
+  const loginUrl = window.location.origin + '/pages/login.html';
+
+  const text = `
+==============================================
+CREDENCIAIS DE ACESSO - PONTOLABS
+==============================================
+
+Email: ${createdCredentials.email}
+Senha: ${createdCredentials.password}
+
+URL de Login: ${loginUrl}
+
+==============================================
+Guarde estas informações em local seguro!
+==============================================
+  `.trim();
+
+  navigator.clipboard.writeText(text).then(() => {
+    alert('✅ Credenciais copiadas para a área de transferência!');
+  }).catch(err => {
+    console.error('Erro ao copiar:', err);
+    alert('Erro ao copiar credenciais. Copie manualmente.');
+  });
+}
+
 // Fecha modal ao clicar fora
 window.onclick = function(event) {
   const empresaModal = document.getElementById('empresa-modal');
   const detailModal = document.getElementById('empresa-detail-modal');
+  const criarAdminModal = document.getElementById('criar-admin-modal');
+  const credenciaisModal = document.getElementById('credenciais-modal');
 
   if (event.target === empresaModal) {
     closeEmpresaModal();
   }
   if (event.target === detailModal) {
     closeDetailModal();
+  }
+  if (event.target === criarAdminModal) {
+    closeCreateAdminModal();
+  }
+  if (event.target === credenciaisModal) {
+    closeCredenciaisModal();
   }
 }

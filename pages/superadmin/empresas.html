@@ -188,9 +188,91 @@
     </div>
   </div>
 
+  <!-- Modal: Criar Admin -->
+  <div id="criar-admin-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>👨‍💼 Criar Admin para Empresa</h2>
+        <button class="modal-close" onclick="closeCreateAdminModal()">&times;</button>
+      </div>
+      <form id="criar-admin-form">
+        <div class="modal-body">
+          <p style="margin-bottom: 1.5rem; color: #666;">
+            Criar um administrador para gerenciar esta empresa.
+          </p>
+
+          <div class="form-group">
+            <label for="admin-nome">Nome Completo *</label>
+            <input type="text" id="admin-nome" class="input" required placeholder="Ex: João Silva">
+          </div>
+
+          <div class="form-group">
+            <label for="admin-email">Email *</label>
+            <input type="email" id="admin-email" class="input" required placeholder="admin@empresa.com">
+          </div>
+
+          <div class="form-group">
+            <label for="admin-password">Senha *</label>
+            <input type="password" id="admin-password" class="input" required placeholder="Mínimo 6 caracteres" minlength="6">
+            <small style="color: #666;">A senha deve ter no mínimo 6 caracteres</small>
+          </div>
+
+          <div class="form-group">
+            <label for="admin-password-confirm">Confirmar Senha *</label>
+            <input type="password" id="admin-password-confirm" class="input" required placeholder="Digite a senha novamente" minlength="6">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeCreateAdminModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="criar-admin-btn">Criar Admin</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Credenciais Criadas -->
+  <div id="credenciais-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>✅ Admin Criado com Sucesso!</h2>
+        <button class="modal-close" onclick="closeCredenciaisModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 1.5rem;">
+          <strong>IMPORTANTE:</strong> Copie estas credenciais e envie para o cliente.
+          Elas <strong>não serão exibidas novamente</strong>!
+        </p>
+
+        <div class="credenciais-box">
+          <div class="credencial-item">
+            <label>Email:</label>
+            <div class="credencial-value" id="credencial-email">-</div>
+          </div>
+          <div class="credencial-item">
+            <label>Senha:</label>
+            <div class="credencial-value" id="credencial-password">-</div>
+          </div>
+          <div class="credencial-item">
+            <label>URL de Login:</label>
+            <div class="credencial-value" id="credencial-url">-</div>
+          </div>
+        </div>
+
+        <button onclick="copyCredentials()" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+          📋 Copiar Todas as Credenciais
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeCredenciaisModal()">Fechar</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/superadmin-config.js"></script>
   <script src="/assets/js/db.js"></script>
   <script src="/assets/js/auth.js"></script>
   <script src="/assets/js/superadmin-empresas.js"></script>
