@@ -1,129 +1,186 @@
-# 🕐 PontoLabs
+# 🕐 PontoLabs - Sistema de Ponto Digital
 
-Sistema de ponto digital com QR Code dinâmico, desenvolvido com HTML, CSS e JavaScript puro.
+Sistema completo de ponto digital com QR Code dinâmico, multi-empresa e painel SuperAdmin.
 
-## 🚀 Features
+## 🚀 Início Rápido
 
-- ✅ Autenticação com Supabase
-- ✅ QR Code dinâmico (30 segundos) com Web Crypto API
+### Para SuperAdmin (Você):
+
+1. **Configure uma vez:**
+   - Criar usuário SuperAdmin → `[Ver guia](docs/SETUP_RAPIDO.md)`
+   - Configurar Service Key → `[Ver guia](docs/CONFIGURAR_SERVICE_KEY.md)`
+
+2. **Entregar para cliente:**
+   - Criar empresa pelo painel (30s)
+   - Criar admin da empresa (30s)
+   - Enviar credenciais → `[Ver fluxo](docs/FLUXO_COMPLETO.md)`
+
+### Para Admin (Cliente):
+
+1. Fazer login com credenciais recebidas
+2. Criar funcionários e terminais
+3. Visualizar relatórios e exportar dados
+
+---
+
+## ✨ Funcionalidades
+
+### 🔐 SuperAdmin
+- ✅ Dashboard com visão geral de todas empresas
+- ✅ CRUD completo de empresas
+- ✅ Criar admins automaticamente (sem SQL manual!)
+- ✅ Gerenciar todos os usuários do sistema
+- ✅ Estatísticas e monitoramento
+
+### 👨‍💼 Admin (Empresa)
+- ✅ Gerenciar funcionários e terminais
+- ✅ Visualizar relatórios de pontos
+- ✅ Exportar dados (CSV)
+- ✅ Dashboard com estatísticas da empresa
+
+### 🖥️ Terminal
+- ✅ QR Code dinâmico (muda a cada 30 segundos)
+- ✅ Modo fullscreen para tablets
+- ✅ Interface limpa e responsiva
+
+### 👤 Funcionário
 - ✅ Scanner QR Code via câmera
-- ✅ Dashboard administrativo
-- ✅ CRUD de funcionários e terminais
-- ✅ Relatórios com exportação CSV
-- ✅ PWA (Progressive Web App)
-- ✅ Funcionamento offline com sincronização
-- ✅ Multi-empresa
-- ✅ Responsivo (mobile-first)
+- ✅ Registrar entrada/saída
+- ✅ Histórico de pontos
+- ✅ App mobile (PWA)
 
-## 📋 Pré-requisitos
+---
 
-- Conta no [Supabase](https://supabase.com)
-- Conta no [Netlify](https://netlify.com) (para deploy)
-- Node.js (opcional, apenas para development local)
+## 📚 Documentação
 
-## 🔧 Instalação
+### Para Começar:
+- **[Setup Rápido](docs/SETUP_RAPIDO.md)** - Configure em 5 minutos
+- **[Fluxo Completo](docs/FLUXO_COMPLETO.md)** - Como entregar para clientes
+- **[Como Usar](docs/COMO_USAR.md)** - Guia de uso geral
 
-### 1. Clone o repositório
+### SuperAdmin:
+- **[Guia SuperAdmin](docs/GUIA_SUPERADMIN.md)** - Guia completo
+- **[Configurar Service Key](docs/CONFIGURAR_SERVICE_KEY.md)** - Criar admins automaticamente
 
-```bash
-git clone https://github.com/LukystarWar/pontolabs.git
-cd pontolabs
-```
+### Técnico:
+- **[Setup Supabase](docs/SETUP_SUPABASE.md)** - Configurar banco de dados
+- **[Deploy](docs/DEPLOY.md)** - Colocar em produção
+- **[Instruções](docs/INSTRUCOES.md)** - Detalhes técnicos
 
-### 2. Configure o Supabase
+### Resolução de Problemas:
+- **[Corrigir Erro Login](docs/CORRIGIR_ERRO_LOGIN.md)** - Problemas com SuperAdmin
 
-1. Crie um projeto no Supabase
-2. Execute o SQL em `database/schema.sql` no SQL Editor
-3. Copie as credenciais (Project URL e anon key)
-4. Cole em `assets/js/config.js`
+---
 
-### 3. Configure as variáveis de ambiente (Netlify)
+## 🛠️ Tecnologias
 
-Copie `.env.example` para `.env` e configure:
+- **Frontend:** HTML5, CSS3, JavaScript Vanilla
+- **Backend:** Supabase (PostgreSQL + Auth)
+- **QR Code:** qrcode.js + html5-qrcode
+- **PWA:** Service Worker + Manifest
+- **Deploy:** Netlify / Vercel / Servidor próprio
 
-```env
-SUPABASE_URL=sua-url-aqui
-SUPABASE_SERVICE_KEY=sua-service-key-aqui
-JWT_SECRET=sua-secret-key-aqui
-```
+---
 
-### 4. Deploy no Netlify
-
-1. Conecte o repositório GitHub ao Netlify
-2. Configure as variáveis de ambiente no Netlify
-3. Deploy automático!
-
-Ou via Netlify CLI:
-
-```bash
-npm install -g netlify-cli
-netlify deploy --prod
-```
-
-## 📱 Uso
-
-### Acesso Admin
-
-1. Acesse `https://seu-site.netlify.app`
-2. Faça login com suas credenciais
-3. Gerencie funcionários e terminais
-4. Visualize relatórios
-
-### Terminal
-
-1. Login com usuário tipo "terminal"
-2. Modo fullscreen para tablets
-3. QR Code rotativo a cada 30 segundos
-
-### Funcionário
-
-1. Login via app
-2. Selecione tipo (entrada/saída)
-3. Escaneie o QR Code do terminal
-4. Ponto registrado!
-
-## 🏗️ Estrutura do Projeto
+## 📁 Estrutura do Projeto
 
 ```
 pontolabs/
-├── assets/
-│   ├── css/          # Estilos (global, admin, terminal, mobile)
-│   ├── js/           # Scripts (auth, db, qr, etc)
-│   └── icons/        # Ícones PWA
+├── index.html                 # Landing page
 ├── pages/
-│   ├── admin/        # Dashboard, funcionários, terminais, relatórios
-│   ├── login.html
-│   ├── terminal.html
-│   └── funcionario.html
-├── netlify/
-│   └── functions/    # Serverless functions
-├── database/
-│   └── schema.sql    # SQL do banco
-├── manifest.json     # PWA manifest
-├── sw.js            # Service Worker
-└── netlify.toml     # Config Netlify
+│   ├── login.html             # Login único
+│   ├── superadmin/            # Painel SuperAdmin
+│   ├── admin/                 # Dashboard empresas
+│   ├── terminal.html          # QR Code
+│   └── funcionario.html       # Scanner
+├── assets/
+│   ├── js/                    # Scripts
+│   ├── css/                   # Estilos
+│   └── icons/                 # Ícones PWA
+├── database/                  # SQL schemas
+├── docs/                      # Documentação
+└── README.md                  # Este arquivo
 ```
 
-## 🔐 Segurança
+---
 
-- JWT com HMAC-SHA256
-- QR Code expira em 30 segundos
-- Row Level Security (RLS) no Supabase
-- Pontos não podem ser editados/excluídos (trigger)
-- Hash SHA-256 de cada registro
+## ⚡ Características
 
-## 🎨 Tecnologias
+- ✅ **Multi-empresa** com isolamento de dados (RLS)
+- ✅ **QR Code dinâmico** com expiração de 30 segundos
+- ✅ **Segurança** com JWT e hash SHA-256
+- ✅ **Progressive Web App** (funciona offline)
+- ✅ **Responsivo** (mobile-first)
+- ✅ **Sem dependências** de frameworks pesados
+- ✅ **Fácil de deployar** (arquivos estáticos)
 
-- **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
-- **Backend:** Netlify Functions (Node.js)
-- **Banco:** PostgreSQL (Supabase)
-- **Auth:** Supabase Auth
-- **PWA:** Service Worker + Manifest
-- **QR:** qrcode.js + html5-qrcode
+---
+
+## 🎯 Tipos de Usuário
+
+| Tipo | Acesso | Após Login |
+|------|--------|------------|
+| **SuperAdmin** | Todas empresas | Painel de gestão |
+| **Admin** | Sua empresa | Dashboard da empresa |
+| **Terminal** | QR Code | Tela de QR Code |
+| **Funcionário** | Scanner | App de ponto |
+
+---
+
+## 🚦 Status do Projeto
+
+✅ **Pronto para produção!**
+
+- [x] Painel SuperAdmin completo
+- [x] CRUD de empresas
+- [x] Criar admins automaticamente
+- [x] Multi-empresa funcionando
+- [x] QR Code dinâmico
+- [x] Scanner funcionando
+- [x] Relatórios e exportação
+- [x] Documentação completa
+
+---
+
+## 📊 Limites do Supabase (Free Tier)
+
+| Recurso | Limite | Observação |
+|---------|--------|------------|
+| Banco | 500 MB | ~1000 funcionários |
+| API | 2 GB/mês | ~100k requests |
+| Auth | 50k users | Mais que suficiente |
+| Storage | 1 GB | Para fotos (se implementar) |
+
+**Para produção séria:** Considere Plano Pro ($25/mês)
+
+---
+
+## 🔧 Configuração Mínima
+
+1. Criar projeto no Supabase
+2. Executar SQL em `database/schema.sql`
+3. Configurar credenciais em `assets/js/config.js`
+4. Configurar Service Key (opcional, mas recomendado)
+5. Abrir `index.html` no navegador
+
+**Total: ~10 minutos**
+
+---
+
+## 📞 Suporte
+
+- 📖 Documentação completa na pasta `docs/`
+- 🐛 Console do navegador (F12) para debug
+- 🗄️ Supabase Dashboard para gerenciar banco
+- 💻 GitHub Issues para reportar problemas
+
+---
 
 ## 📄 Licença
 
 MIT License - Castro Labs
+
+---
 
 ## 👨‍💻 Autor
 
@@ -132,4 +189,15 @@ MIT License - Castro Labs
 
 ---
 
-**PontoLabs** • Sistema de Ponto Digital 🕐
+## 🎉 Começar Agora
+
+1. **Leia:** [docs/SETUP_RAPIDO.md](docs/SETUP_RAPIDO.md)
+2. **Configure:** Supabase + Service Key
+3. **Teste:** Crie empresa e admin
+4. **Entregue:** Primeiro cliente!
+
+**Boa sorte!** 🚀
+
+---
+
+**PontoLabs** • Sistema de Ponto Digital com Multi-Empresa
