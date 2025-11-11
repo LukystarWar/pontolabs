@@ -59,8 +59,8 @@ if (loginForm) {
         throw new Error('Perfil não encontrado');
       }
 
-      // Verifica se empresa está ativa
-      if (!profile.empresas.ativa) {
+      // Verifica se empresa está ativa (não se aplica ao superadmin)
+      if (profile.role !== 'superadmin' && profile.empresas && !profile.empresas.ativa) {
         throw new Error('Empresa inativa. Entre em contato com o suporte.');
       }
 
@@ -70,7 +70,7 @@ if (loginForm) {
         email: user.email,
         role: profile.role,
         empresaId: profile.empresa_id,
-        empresaNome: profile.empresas.nome
+        empresaNome: profile.empresas ? profile.empresas.nome : 'SuperAdmin'
       }));
 
       // Redireciona baseado no role
@@ -150,8 +150,15 @@ async function loadUserInfo() {
     const planoElement = document.getElementById('plano');
 
     if (userNameElement) userNameElement.textContent = profile.nome;
-    if (empresaNomeElement) empresaNomeElement.textContent = profile.empresas.nome;
-    if (planoElement) planoElement.textContent = profile.empresas.plano.toUpperCase();
+
+    // SuperAdmin não tem empresa
+    if (profile.empresas) {
+      if (empresaNomeElement) empresaNomeElement.textContent = profile.empresas.nome;
+      if (planoElement) planoElement.textContent = profile.empresas.plano.toUpperCase();
+    } else {
+      if (empresaNomeElement) empresaNomeElement.textContent = 'SuperAdmin';
+      if (planoElement) planoElement.textContent = 'MASTER';
+    }
 
     return profile;
   } catch (error) {

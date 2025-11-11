@@ -23,11 +23,28 @@ async function getUserProfile() {
 
   const { data, error } = await supabase
     .from('usuarios')
-    .select('*, empresas(*)')
+    .select('*')
     .eq('id', user.id)
     .single();
 
   if (error) throw error;
+
+  // Se tiver empresa_id, busca os dados da empresa
+  if (data && data.empresa_id) {
+    const { data: empresa, error: empresaError } = await supabase
+      .from('empresas')
+      .select('*')
+      .eq('id', data.empresa_id)
+      .single();
+
+    if (!empresaError && empresa) {
+      data.empresas = empresa;
+    }
+  } else {
+    // SuperAdmin não tem empresa
+    data.empresas = null;
+  }
+
   return data;
 }
 
