@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usuários - SuperAdmin - PontoLabs</title>
+  <link rel="icon" href="/assets/icons/icon-192.png">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/superadmin.css">
+</head>
+<body>
+  <div class="superadmin-layout">
+    <header class="superadmin-header">
+      <div class="logo">🔐 <strong>SuperAdmin</strong> PontoLabs</div>
+      <div class="user-info">
+        <span id="user-name">SuperAdmin</span>
+        <button id="logout-btn" class="btn btn-secondary">Sair</button>
+      </div>
+    </header>
+
+    <nav class="superadmin-nav">
+      <ul>
+        <li><a href="/pages/superadmin/dashboard.html">📊 Dashboard</a></li>
+        <li><a href="/pages/superadmin/empresas.html">🏢 Empresas</a></li>
+        <li><a href="/pages/superadmin/usuarios.html" class="active">👥 Usuários</a></li>
+        <li><a href="/pages/superadmin/sistema.html">⚙️ Sistema</a></li>
+      </ul>
+    </nav>
+
+    <main class="superadmin-content">
+      <div class="page-header">
+        <h1>👥 Todos os Usuários</h1>
+        <p>Visualize e gerencie todos os usuários do sistema</p>
+      </div>
+
+      <!-- Filtros -->
+      <div class="filters">
+        <input type="text" id="search-input" placeholder="🔍 Buscar por nome ou email..." class="input">
+        <select id="role-filter" class="input">
+          <option value="all">Todos os Tipos</option>
+          <option value="superadmin">SuperAdmin</option>
+          <option value="admin">Admin</option>
+          <option value="funcionario">Funcionário</option>
+          <option value="terminal">Terminal</option>
+        </select>
+        <select id="empresa-filter" class="input">
+          <option value="all">Todas as Empresas</option>
+        </select>
+      </div>
+
+      <!-- Estatísticas por Role -->
+      <div class="stats-grid-small">
+        <div class="stat-card-small">
+          <div class="stat-icon-small">🔐</div>
+          <div class="stat-info-small">
+            <div class="stat-value-small" id="count-superadmin">0</div>
+            <div class="stat-label-small">SuperAdmins</div>
+          </div>
+        </div>
+        <div class="stat-card-small">
+          <div class="stat-icon-small">👨‍💼</div>
+          <div class="stat-info-small">
+            <div class="stat-value-small" id="count-admin">0</div>
+            <div class="stat-label-small">Admins</div>
+          </div>
+        </div>
+        <div class="stat-card-small">
+          <div class="stat-icon-small">👤</div>
+          <div class="stat-info-small">
+            <div class="stat-value-small" id="count-funcionario">0</div>
+            <div class="stat-label-small">Funcionários</div>
+          </div>
+        </div>
+        <div class="stat-card-small">
+          <div class="stat-icon-small">🖥️</div>
+          <div class="stat-info-small">
+            <div class="stat-value-small" id="count-terminal">0</div>
+            <div class="stat-label-small">Terminais</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabela de Usuários -->
+      <div class="table-container">
+        <table id="usuarios-table">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Email</th>
+              <th>Tipo</th>
+              <th>Empresa</th>
+              <th>Criado em</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="usuarios-tbody">
+            <tr>
+              <td colspan="6" style="text-align: center; padding: 2rem;">
+                Carregando...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal: Detalhes do Usuário -->
+  <div id="usuario-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modal-usuario-nome">Detalhes do Usuário</h2>
+        <button class="modal-close" onclick="closeUsuarioModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="detail-grid">
+          <div class="detail-item">
+            <span class="detail-label">ID:</span>
+            <span class="detail-value" id="detail-id">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Email:</span>
+            <span class="detail-value" id="detail-email">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Tipo:</span>
+            <span class="detail-value" id="detail-role">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Empresa:</span>
+            <span class="detail-value" id="detail-empresa">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Criado em:</span>
+            <span class="detail-value" id="detail-criado">-</span>
+          </div>
+        </div>
+
+        <div class="detail-actions">
+          <button class="btn btn-secondary" onclick="viewEmpresa()">Ver Empresa</button>
+          <button class="btn btn-danger" onclick="deleteUsuario()" id="delete-user-btn">Excluir Usuário</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/db.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script src="/assets/js/superadmin-usuarios.js"></script>
+</body>
+</html>

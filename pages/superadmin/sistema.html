@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema - SuperAdmin - PontoLabs</title>
+  <link rel="icon" href="/assets/icons/icon-192.png">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/superadmin.css">
+</head>
+<body>
+  <div class="superadmin-layout">
+    <header class="superadmin-header">
+      <div class="logo">🔐 <strong>SuperAdmin</strong> PontoLabs</div>
+      <div class="user-info">
+        <span id="user-name">SuperAdmin</span>
+        <button id="logout-btn" class="btn btn-secondary">Sair</button>
+      </div>
+    </header>
+
+    <nav class="superadmin-nav">
+      <ul>
+        <li><a href="/pages/superadmin/dashboard.html">📊 Dashboard</a></li>
+        <li><a href="/pages/superadmin/empresas.html">🏢 Empresas</a></li>
+        <li><a href="/pages/superadmin/usuarios.html">👥 Usuários</a></li>
+        <li><a href="/pages/superadmin/sistema.html" class="active">⚙️ Sistema</a></li>
+      </ul>
+    </nav>
+
+    <main class="superadmin-content">
+      <div class="page-header">
+        <h1>⚙️ Configurações do Sistema</h1>
+        <p>Informações e configurações gerais do PontoLabs</p>
+      </div>
+
+      <!-- Informações do Sistema -->
+      <div class="section">
+        <h2>📋 Informações do Sistema</h2>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-label">Versão</div>
+            <div class="info-value">1.0.0</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Database</div>
+            <div class="info-value" id="db-status">Supabase PostgreSQL</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Project URL</div>
+            <div class="info-value" id="project-url" style="font-size: 0.85rem;">-</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Ambiente</div>
+            <div class="info-value">Produção</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estatísticas do Banco -->
+      <div class="section">
+        <h2>💾 Estatísticas do Banco de Dados</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">🏢</div>
+            <div class="stat-info">
+              <div class="stat-value" id="total-empresas-db">0</div>
+              <div class="stat-label">Total Empresas</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-info">
+              <div class="stat-value" id="total-usuarios-db">0</div>
+              <div class="stat-label">Total Usuários</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">👨‍💼</div>
+            <div class="stat-info">
+              <div class="stat-value" id="total-funcionarios-db">0</div>
+              <div class="stat-label">Total Funcionários</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🖥️</div>
+            <div class="stat-info">
+              <div class="stat-value" id="total-terminais-db">0</div>
+              <div class="stat-label">Total Terminais</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">✅</div>
+            <div class="stat-info">
+              <div class="stat-value" id="total-pontos-db">0</div>
+              <div class="stat-label">Total Registros</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">📅</div>
+            <div class="stat-info">
+              <div class="stat-value" id="pontos-ultimos-7-dias">0</div>
+              <div class="stat-label">Últimos 7 Dias</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Guia Rápido -->
+      <div class="section">
+        <h2>📖 Guia Rápido de Uso</h2>
+        <div class="guide-grid">
+          <div class="guide-card">
+            <h3>🏢 1. Criar Empresa</h3>
+            <ol>
+              <li>Acesse "Empresas"</li>
+              <li>Clique em "+ Nova Empresa"</li>
+              <li>Preencha nome e plano</li>
+              <li>Salve a empresa</li>
+            </ol>
+          </div>
+
+          <div class="guide-card">
+            <h3>👨‍💼 2. Criar Admin</h3>
+            <ol>
+              <li>Acesse o Supabase Dashboard</li>
+              <li>Vá em Authentication > Users</li>
+              <li>Clique "Add User"</li>
+              <li>Preencha email e senha</li>
+              <li>Marque "Auto Confirm User"</li>
+              <li>Copie o UUID do usuário</li>
+            </ol>
+          </div>
+
+          <div class="guide-card">
+            <h3>🔗 3. Vincular Admin</h3>
+            <ol>
+              <li>Clique na empresa criada</li>
+              <li>Na aba "Usuários"</li>
+              <li>Clique "+ Adicionar Usuário"</li>
+              <li>Cole o UUID e preencha dados</li>
+              <li>Role: "admin"</li>
+            </ol>
+          </div>
+
+          <div class="guide-card">
+            <h3>✅ 4. Pronto!</h3>
+            <p>Agora o Admin pode:</p>
+            <ul>
+              <li>Criar funcionários</li>
+              <li>Criar terminais</li>
+              <li>Ver relatórios</li>
+              <li>Gerenciar sua empresa</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Links Úteis -->
+      <div class="section">
+        <h2>🔗 Links Úteis</h2>
+        <div class="links-grid">
+          <a href="https://supabase.com/dashboard" target="_blank" class="link-card">
+            <div class="link-icon">🗄️</div>
+            <div class="link-info">
+              <div class="link-title">Supabase Dashboard</div>
+              <div class="link-desc">Gerenciar banco de dados</div>
+            </div>
+          </a>
+
+          <a href="https://supabase.com/dashboard/project/_/auth/users" target="_blank" class="link-card">
+            <div class="link-icon">👥</div>
+            <div class="link-info">
+              <div class="link-title">Usuários Auth</div>
+              <div class="link-desc">Criar novos usuários</div>
+            </div>
+          </a>
+
+          <a href="https://supabase.com/dashboard/project/_/editor" target="_blank" class="link-card">
+            <div class="link-icon">📝</div>
+            <div class="link-info">
+              <div class="link-title">SQL Editor</div>
+              <div class="link-desc">Executar queries SQL</div>
+            </div>
+          </a>
+
+          <a href="https://github.com/LukystarWar/pontolabs" target="_blank" class="link-card">
+            <div class="link-icon">🔧</div>
+            <div class="link-info">
+              <div class="link-title">GitHub</div>
+              <div class="link-desc">Código fonte do projeto</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Comandos SQL Úteis -->
+      <div class="section">
+        <h2>💻 Comandos SQL Úteis</h2>
+        <div class="sql-commands">
+          <div class="sql-card">
+            <div class="sql-title">Ver todas as empresas</div>
+            <code class="sql-code">SELECT * FROM empresas ORDER BY criado_em DESC;</code>
+            <button onclick="copySQL(this)" class="btn btn-sm">Copiar</button>
+          </div>
+
+          <div class="sql-card">
+            <div class="sql-title">Ver todos os usuários com empresas</div>
+            <code class="sql-code">SELECT u.*, e.nome as empresa_nome
+FROM usuarios u
+LEFT JOIN empresas e ON e.id = u.empresa_id
+ORDER BY u.criado_em DESC;</code>
+            <button onclick="copySQL(this)" class="btn btn-sm">Copiar</button>
+          </div>
+
+          <div class="sql-card">
+            <div class="sql-title">Contar registros por empresa</div>
+            <code class="sql-code">SELECT e.nome,
+  COUNT(DISTINCT u.id) as usuarios,
+  COUNT(DISTINCT f.id) as funcionarios,
+  COUNT(DISTINCT t.id) as terminais,
+  COUNT(DISTINCT p.id) as pontos
+FROM empresas e
+LEFT JOIN usuarios u ON u.empresa_id = e.id
+LEFT JOIN funcionarios f ON f.empresa_id = e.id
+LEFT JOIN terminais t ON t.empresa_id = e.id
+LEFT JOIN pontos p ON p.empresa_id = e.id
+GROUP BY e.nome;</code>
+            <button onclick="copySQL(this)" class="btn btn-sm">Copiar</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/db.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script src="/assets/js/superadmin-sistema.js"></script>
+</body>
+</html>

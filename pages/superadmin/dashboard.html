@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SuperAdmin Dashboard - PontoLabs</title>
+  <link rel="icon" href="/assets/icons/icon-192.png">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/superadmin.css">
+</head>
+<body>
+  <div class="superadmin-layout">
+    <header class="superadmin-header">
+      <div class="logo">🔐 <strong>SuperAdmin</strong> PontoLabs</div>
+      <div class="user-info">
+        <span id="user-name">SuperAdmin</span>
+        <button id="logout-btn" class="btn btn-secondary">Sair</button>
+      </div>
+    </header>
+
+    <nav class="superadmin-nav">
+      <ul>
+        <li><a href="/pages/superadmin/dashboard.html" class="active">📊 Dashboard</a></li>
+        <li><a href="/pages/superadmin/empresas.html">🏢 Empresas</a></li>
+        <li><a href="/pages/superadmin/usuarios.html">👥 Usuários</a></li>
+        <li><a href="/pages/superadmin/sistema.html">⚙️ Sistema</a></li>
+      </ul>
+    </nav>
+
+    <main class="superadmin-content">
+      <div class="page-header">
+        <h1>📊 Dashboard Geral</h1>
+        <p>Visão geral de todas as empresas e usuários do sistema</p>
+      </div>
+
+      <!-- Cards de Estatísticas -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">🏢</div>
+          <div class="stat-info">
+            <div class="stat-value" id="total-empresas">0</div>
+            <div class="stat-label">Empresas Ativas</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">👥</div>
+          <div class="stat-info">
+            <div class="stat-value" id="total-usuarios">0</div>
+            <div class="stat-label">Total Usuários</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">👨‍💼</div>
+          <div class="stat-info">
+            <div class="stat-value" id="total-funcionarios">0</div>
+            <div class="stat-label">Funcionários</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">🖥️</div>
+          <div class="stat-info">
+            <div class="stat-value" id="total-terminais">0</div>
+            <div class="stat-label">Terminais Ativos</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">✅</div>
+          <div class="stat-info">
+            <div class="stat-value" id="total-pontos-hoje">0</div>
+            <div class="stat-label">Pontos Hoje</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">📅</div>
+          <div class="stat-info">
+            <div class="stat-value" id="total-pontos-mes">0</div>
+            <div class="stat-label">Pontos no Mês</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lista de Empresas Recentes -->
+      <div class="section">
+        <div class="section-header">
+          <h2>🏢 Empresas Recentes</h2>
+          <a href="/pages/superadmin/empresas.html" class="btn btn-primary">Ver Todas</a>
+        </div>
+        <div class="table-container">
+          <table id="empresas-table">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Plano</th>
+                <th>Status</th>
+                <th>Funcionários</th>
+                <th>Terminais</th>
+                <th>Data Início</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="empresas-tbody">
+              <tr>
+                <td colspan="7" style="text-align: center; padding: 2rem;">
+                  Carregando...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Atividade Recente -->
+      <div class="section">
+        <div class="section-header">
+          <h2>📋 Atividade Recente</h2>
+        </div>
+        <div class="activity-list" id="activity-list">
+          <p style="text-align: center; padding: 2rem; color: #666;">
+            Carregando atividades...
+          </p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/db.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script src="/assets/js/superadmin-dashboard.js"></script>
+</body>
+</html>

@@ -88,6 +88,9 @@ if (loginForm) {
 // Redireciona baseado no role
 function redirectByRole(role) {
   switch (role) {
+    case 'superadmin':
+      window.location.href = '/pages/superadmin/dashboard.html';
+      break;
     case 'admin':
       window.location.href = '/pages/admin/dashboard.html';
       break;
@@ -96,9 +99,6 @@ function redirectByRole(role) {
       break;
     case 'funcionario':
       window.location.href = '/pages/funcionario.html';
-      break;
-    case 'superadmin':
-      window.location.href = '/pages/admin/dashboard.html';
       break;
     default:
       throw new Error('Role inválido');
