@@ -14,7 +14,22 @@ A **Service Role Key** permite que o SuperAdmin crie usuários automaticamente p
 4. Clique no ícone 👁️ para revelar a key
 5. Clique em **copiar** 📋
 
-### PASSO 2: Colar no arquivo de configuração
+### PASSO 2: Criar arquivo de configuração
+
+⚠️ **IMPORTANTE:** O arquivo real NÃO está no Git (por segurança)!
+
+**Opção A - Copiar arquivo (Recomendado):**
+```bash
+cp assets/js/superadmin-config.example.js assets/js/superadmin-config.js
+```
+
+**Opção B - Criar manualmente:**
+1. Abra: `assets/js/superadmin-config.example.js`
+2. Copie todo o conteúdo
+3. Crie novo arquivo: `assets/js/superadmin-config.js`
+4. Cole o conteúdo
+
+### PASSO 3: Colar a Service Key
 
 1. Abra o arquivo: `assets/js/superadmin-config.js`
 2. Encontre esta linha:
@@ -28,7 +43,9 @@ const SUPABASE_SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
 ```
 5. Salve o arquivo
 
-### PASSO 3: Testar
+✅ **Este arquivo está no .gitignore - não será commitado!**
+
+### PASSO 4: Testar
 
 1. Recarregue a página do SuperAdmin (Ctrl+Shift+R)
 2. Vá em "Empresas"

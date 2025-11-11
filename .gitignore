@@ -6,6 +6,9 @@ package-lock.json
 .env
 .env.local
 
+# Service Key (NÃO COMMITAR!)
+assets/js/superadmin-config.js
+
 # Netlify
 .netlify/
 netlify/functions/node_modules/
